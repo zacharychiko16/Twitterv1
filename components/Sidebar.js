@@ -5,11 +5,11 @@ import {   BellIcon, BookmarkIcon, ClipboardIcon, DotsCircleHorizontalIcon, Dots
 export default function Sidebar() {
   return (
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24" >
-    <div className="hoverEffect">
+    <div className="hoverEffect p-0 hover:bg-blue-100 xl:px-1">
         <Image width="50" height="50" src="https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg"></Image>
     </div>
 
-    <div>
+    <div className="mt-4 mb-2.5 xl:items-start">
         <SidebarMenuItem text="Home" Icon={HomeIcon} active/>
         <SidebarMenuItem text="Explore" Icon={HashtagIcon}/>
         <SidebarMenuItem text="Notifications" Icon={BellIcon}/>
@@ -22,13 +22,13 @@ export default function Sidebar() {
 
     <button className="bg-blue-400 text-white rounded-full w-56 h-12 font-bold shadow-md hover:brightness-95 text-lg hidden xl:inline">Tweet</button>
 
-    <div className="hoverEffect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
+    <div className= "hoverEffect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
         <img className="h-10 w-10 rounded-full xl:mr-2`" src="https://staticg.sportskeeda.com/editor/2022/11/a402f-16694231050443-1920.jpg" alt="user-img"/>
-        <div>
+        <div className="leading-5 hidden xl:inline">
             <h4 className="font-bold">Zachary Baird</h4>
-            <p>@themilkman</p>
+            <p className="text-gray-500">@themilkman</p>
         </div>
-        <DotsHorizontalIcon className="h-5"/>
+        <DotsHorizontalIcon className="h-5 xl:ml-8 hidden xl:inline"/>
     </div>
     </div>
     
