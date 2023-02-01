@@ -1,10 +1,12 @@
 import { EmojiHappyIcon, PhotographIcon } from "@heroicons/react/outline";
+import { useSession } from "next-auth/react";
 
 export default function Input() {
+  const {data: session} = useSession
   return (
     <div  className="flex  border-b border-gray-200 p-3 space-x-3">
       <img
-        src="https://staticg.sportskeeda.com/editor/2022/11/a402f-16694231050443-1920.jpg"
+        src={session.user.image}
         alt="user-img"
         className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
       />
