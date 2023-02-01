@@ -3,10 +3,11 @@ import SidebarMenuItem from "./SidebarMenuItem"
 import {   HomeIcon } from '@heroicons/react/solid'
 import {   BellIcon, BookmarkIcon, ClipboardIcon, DotsCircleHorizontalIcon, DotsHorizontalIcon, HashtagIcon, InboxIcon, UserIcon } from '@heroicons/react/outline'
 export default function Sidebar() {
+  const src ="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"
   return (
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24" >
     <div className="hoverEffect p-0 hover:bg-blue-100 xl:px-1">
-        <Image width="50" height="50" src="https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg"></Image>
+        <Image loader={() =>src } width="50" height="50" src={src}></Image>
     </div>
 
     <div className="mt-4 mb-2.5 xl:items-start">
