@@ -1,4 +1,4 @@
-import { db } from "@/firebase";
+import { db, storage } from "@/firebase";
 import { async } from "@firebase/util";
 import {
   ChartBarIcon,
@@ -19,6 +19,7 @@ import {
 import Moment from "react-moment";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
 
 export default function Post({ post }) {
   const { data: session } = useSession();
@@ -40,18 +41,25 @@ export default function Post({ post }) {
 
   async function likePost() {
     if (session) {
-       if (hasLiked) {
-      await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid));
+      if (hasLiked) {
+        await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid));
+      } else {
+        await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid), {
+          username: session.user.username,
+        });
+      }
     } else {
-      await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid), {
-        username: session.user.username,
-      });
+      signIn();
     }
-    }else {
-      signIn()
-    }
-   
   }
+
+  async function deletePost() {
+    if(window.confirm("Are you sure you want to delete this post?")){
+          deleteDoc(doc(db, "posts", post.id))
+    deleteObject(ref(storage, `posts/${post.id}/image`))
+    }
+  }
+
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200">
       {/* user image */}
@@ -98,8 +106,9 @@ export default function Post({ post }) {
           <div className="flex items-center select-none">
             <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
           </div>
-
-          <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+          {session?.user.uid === post?.data().id && (
+            <TrashIcon onClick={deletePost} className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+          )}
           <div className="flex items-center">
             {hasLiked ? (
               <HeartIconFilled
