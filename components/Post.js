@@ -54,9 +54,11 @@ export default function Post({ post }) {
   }
 
   async function deletePost() {
-    if(window.confirm("Are you sure you want to delete this post?")){
-          deleteDoc(doc(db, "posts", post.id))
-    deleteObject(ref(storage, `posts/${post.id}/image`))
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      deleteDoc(doc(db, "posts", post.id));
+      if (post.data().image) {
+        deleteObject(ref(storage, `posts/${post.id}/image`));
+      }
     }
   }
 
@@ -107,7 +109,10 @@ export default function Post({ post }) {
             <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
           </div>
           {session?.user.uid === post?.data().id && (
-            <TrashIcon onClick={deletePost} className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+            <TrashIcon
+              onClick={deletePost}
+              className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+            />
           )}
           <div className="flex items-center">
             {hasLiked ? (
