@@ -39,7 +39,8 @@ async function sendComment() {
         name: session.user.name,
         username: session.user.username,
         userImg: session.user.image,
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
+        userId: session.user.uid,
     })
     setOpen(false)
     setInput("")
