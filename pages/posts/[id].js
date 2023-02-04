@@ -13,7 +13,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import Comment from "@/components/comment";
+import Comment from "@/components/Comment";
 import { db } from "@/firebase";
 import { AnimatePresence, motion } from "framer-motion";
 
