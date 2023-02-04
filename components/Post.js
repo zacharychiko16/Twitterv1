@@ -26,6 +26,7 @@ import { useRecoilState } from "recoil";
 export default function Post({ post }) {
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([])
   const [hasLiked, setHasLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setpostId] = useRecoilState(postIdState);
@@ -37,6 +38,13 @@ export default function Post({ post }) {
       (snapshot) => setLikes(snapshot.docs)
     );
   }, [db]);
+
+  useEffect(()=> {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", post.id, "comments"),
+      (snapshot) => setComments(snapshot.docs)
+    );
+  },[db])
 
   useEffect(() => {
     setHasLiked(
@@ -123,6 +131,13 @@ export default function Post({ post }) {
               }}
               className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
             />
+            {comments.length > 0 && (
+              <span
+              className={`${comments && "text-600"} text-sm select-none` }>
+                {" "}
+                {comments.length}
+              </span>
+            )}
           </div>
           {session?.user.uid === post?.data().id && (
             <TrashIcon
