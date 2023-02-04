@@ -4,6 +4,7 @@ import { Inter } from "@next/font/google";
 import Sidebar from "@/components/Sidebar";
 import Feed from "@/components/Feed";
 import Widgets from "@/components/Widgets";
+import CommentsModal from "@/components/CommentsModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,11 @@ export default function Home({ newsResults, randomUsersResults }) {
       <main className="flex min-h-screen mx-auto">
         <Sidebar />
         <Feed />
-        <Widgets newsResults={newsResults.articles} randomUsersResults={randomUsersResults.results} />
+        <Widgets
+          newsResults={newsResults.articles}
+          randomUsersResults={randomUsersResults.results}
+        />
+        <CommentsModal />
       </main>
     </div>
   );
@@ -42,5 +47,3 @@ export async function getServerSideProps() {
     },
   };
 }
-
-
