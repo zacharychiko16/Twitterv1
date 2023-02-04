@@ -17,12 +17,10 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Moment from "react-moment";
-import { userState } from "../atom/userAtom";
 import { useSession } from "next-auth/react";
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
-  const [currentUser] = useRecoilState(userState);
   const [post, setPost] = useState({});
   const [input, setInput] = useState("");
   const { data: session } = useSession();
