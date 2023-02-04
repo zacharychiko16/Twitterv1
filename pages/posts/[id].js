@@ -6,15 +6,41 @@ import CommentsModal from "@/components/CommentsModal";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import Comment from "@/components/comment";
 import { db } from "@/firebase";
 
-
 export default function PostPage({ newsResults, randomUsersResults }) {
-    const router = useRouter()
-    const {id} = router.query
-    const [post, setPost] = useState()
-    useEffect(()=> onSnapshot(doc(db, "posts", id), (snapshot)=>setPost(snapshot)),[db, id])
+  const router = useRouter();
+  const { id } = router.query;
+  const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
+
+  // get the post data
+
+  useEffect(
+    () => onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot)),
+    [db, id]
+  );
+
+  //   get comments of the post
+
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setComments(snapshot.docs)
+    );
+  }, [db, id]);
+
   return (
     <div>
       <Head>
@@ -23,18 +49,32 @@ export default function PostPage({ newsResults, randomUsersResults }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="flex min-h-screen mx-auto">
         <Sidebar />
+
         <div className="xl:ml-[370px] border-l border-r border-gray-200  xl:min-w-[576px] sm:ml-[73px] flex-grow max-w-xl">
           <div className="flex items-center space-x-2 py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
-            <div className="hoverEffect" onClick={()=>router.push("/")}>
-                <ArrowLeftIcon className="h-5" />
+            <div className="hoverEffect" onClick={() => router.push("/")}>
+              <ArrowLeftIcon className="h-5" />
             </div>
             <h2 className="text-lg sm:text-xl font-bold cursor-pointer">
               Tweet
             </h2>
           </div>
-          <Post id={id} post={post}/>
+          <Post id={id} post={post} />
+          {comments.length > 0 && (
+            <div className="">
+              {comments.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  commentId={comment.id}
+                  originalPostId={id}
+                  comment={comment.data()}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <Widgets
           newsResults={newsResults.articles}
